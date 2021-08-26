@@ -8,7 +8,7 @@ ensuite direction "http://127.0.0.1:8080/login" pour accéder à la page de logi
 
 
 ## Explication de l'architecture
-Je suis parti sur le principe de clean architecture qui permet une meilleur evolution du projet,
+Je suis parti sur le principe du clean architecture qui permet une meilleur evolution du projet,
 des tests plus simple à implémenter, etc...
 
 Pour cela nous avons les gateways, les useCases et les dto qui permettent de bien séparer le noyau du projet avec
