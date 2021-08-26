@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210825135650 extends AbstractMigration
+final class Version20210826101150 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -88,16 +88,18 @@ final class Version20210825135650 extends AbstractMigration
 
     private function persistInBdd ($userArray, $productArray, $itemArray, $orderArray) {
         $id = 1;
+        $productSkuById = array();
         foreach ($productArray as $product) {
             $this->addSql('INSERT INTO product (id, sku, name, price) VALUES (' . $id . ', \'' . $product["sku"] . '\', \'' . $product["name"] . '\', ' . $product["price"] . ')');
+            $productSkuById[$product["sku"]] = $id;
             $id++;
         }
-        $this->addSql('INSERT INTO user (id, first_name, last_name, user_name, password) VALUES (' . $id . ', \'admin\', \'admin\', \'admin\', \'S3cr3T+\')');
         $id = 1;
         foreach ($userArray as $user) {
-            $this->addSql('INSERT INTO user (id, first_name, last_name, user_name, password) VALUES (' . $id . ', \'' . $user["firstname"] . '\', \'' . $user["lastname"] . '\', \'' . $user["firstname"] . '_' . $user["lastname"] . '\', \'1234\')');
+            $this->addSql('INSERT INTO user (id, username, first_name, last_name, roles, password) VALUES (' . $id . ', \'' . $user["firstname"] . '_' . $user["lastname"] . '\', \'' . $user["firstname"] . '\', \'' . $user["lastname"] . '\', \'[]\', \'1234\')');
             $id++;
         }
+        $this->addSql('INSERT INTO user (id, username, first_name, last_name, roles, password) VALUES (' . $id . ', \'admin\', \'admin\', \'admin\', \'[]\', \'S3cr3T+\')');
         $id = 1;
         foreach ($orderArray as $order) {
             $this->addSql('INSERT INTO `order` (id, customer_id, order_date, status, price) VALUES (' . $id . ', \'' . $order["customer"] . '\', \'' . $order["orderDate"] . '\', \'' . $order["status"] . '\', ' . $order["price"] . ')');
@@ -105,7 +107,7 @@ final class Version20210825135650 extends AbstractMigration
         }
         $id = 1;
         foreach ($itemArray as $item) {
-            $this->addSql('INSERT INTO item (id, product_id, order_item_id, quantity) VALUES (' . $id . ', ' . $item["product"] . ', ' . $item["order"] . ', ' . $item["quantity"] . ')');
+            $this->addSql('INSERT INTO item (id, product_id, order_item_id, quantity) VALUES (' . $id . ', ' . $productSkuById[$item["product"]] . ', ' . $item["order"] . ', ' . $item["quantity"] . ')');
             $id++;
         }
     }

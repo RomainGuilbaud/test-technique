@@ -7,6 +7,8 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -15,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['user:read']]
 )]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -24,6 +26,12 @@ class User
      * @Groups({"user:read", "order:read"})
      */
     private ?int $id;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user:read", "order:read"})
+     */
+    private string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -38,22 +46,16 @@ class User
     private ?string $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @ORM\Column(type="json")
+     * @Groups({"user:read", "order:read"})
      */
-    private ?string $userName;
+    private array $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
-    private ?string $password;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="customer")
-     * @Groups({"user:read"})
-     */
-    private ArrayCollection $orders;
+    private string $password;
 
     /**
      * User constructor.
@@ -72,66 +74,61 @@ class User
     }
 
     /**
-     * @return string|null
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
      */
-    public function getFirstName(): ?string
+    public function getUsername(): string
     {
-        return $this->firstName;
+        return (string) $this->username;
     }
 
     /**
-     * @param string $firstName
+     * @param string $username
      * @return $this
      */
-    public function setFirstName(string $firstName): self
+    public function setUsername(string $username): self
     {
-        $this->firstName = $firstName;
+        $this->username = $username;
 
         return $this;
     }
 
     /**
-     * @return string|null
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
      */
-    public function getLastName(): ?string
+    public function getUserIdentifier(): string
     {
-        return $this->lastName;
+        return (string) $this->username;
     }
 
     /**
-     * @param string $lastName
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param array $roles
      * @return $this
      */
-    public function setLastName(string $lastName): self
+    public function setRoles(array $roles): self
     {
-        $this->lastName = $lastName;
+        $this->roles = $roles;
 
         return $this;
     }
 
     /**
-     * @return string|null
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getUserName(): ?string
-    {
-        return $this->userName;
-    }
-
-    /**
-     * @param string $userName
-     * @return $this
-     */
-    public function setUserName(string $userName): self
-    {
-        $this->userName = $userName;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -148,40 +145,58 @@ class User
     }
 
     /**
-     * @return Collection|Order[]
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
      */
-    public function getOrders(): Collection
+    public function getSalt(): ?string
     {
-        return $this->orders;
+        return null;
     }
 
     /**
-     * @param Order $order
-     * @return $this
+     * @see UserInterface
      */
-    public function addOrder(Order $order): self
+    public function eraseCredentials()
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->setCustomer($this);
-        }
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string|null $firstName
+     * @return User
+     */
+    public function setFirstName(?string $firstName): User
+    {
+        $this->firstName = $firstName;
         return $this;
     }
 
     /**
-     * @param Order $order
-     * @return $this
+     * @return string|null
      */
-    public function removeOrder(Order $order): self
+    public function getLastName(): ?string
     {
-        if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getCustomer() === $this) {
-                $order->setCustomer(null);
-            }
-        }
+        return $this->lastName;
+    }
 
+    /**
+     * @param string|null $lastName
+     * @return User
+     */
+    public function setLastName(?string $lastName): User
+    {
+        $this->lastName = $lastName;
         return $this;
     }
 }
