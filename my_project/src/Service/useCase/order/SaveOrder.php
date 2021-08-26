@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\useCase\item;
+namespace App\Service\useCase\order;
 
 use App\Entity\Order;
 use App\Gateway\OrderRepositoryGateway;

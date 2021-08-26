@@ -1,3 +1,9 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+listOrder:
+  path: /listOrder
+  controller: App\Controller\order\ListOrderController::index
+addOrder:
+  path: /addOrder
+  controller: App\Controller\order\AddOrderController::index
+addOrderSubmit:
+  path: /addOrderSubmit
+  controller: App\Controller\order\AddOrderController::submitForm

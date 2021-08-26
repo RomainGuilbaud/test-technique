@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\useCase\item;
+namespace App\Service\useCase\product;
 
 use App\Entity\Product;
 use App\Gateway\ProductRepositoryGateway;

@@ -1,3 +1,25 @@
+# Rapport du rendu
+
+## Installation
+Je pars du principe que docker et docker-compose soit installé:
+il suffit de faire un simple "docker-compose up -d" pour faire fonctionner le projet.
+
+ensuite direction "http://127.0.0.1:8080/login" pour accéder à la page de login
+
+
+## Explication de l'architecture
+Je suis parti sur le principe de clean architecture qui permet une meilleur evolution du projet,
+des tests plus simple à implémenter, etc...
+
+Pour cela nous avons les gateways, les useCases et les dto qui permettent de bien séparer le noyau du projet avec
+l'externe (controller,bdd,view,api externe, etc...).
+
+Bien sûr, je suis ouvert à d'autres design pattern, je sais m'adapter facilement à une autre architecture.
+
+## Ce que j'aurais pu faire avec plus de temps
+Vu que dans l'exercice, nous finissons avec des requetes API REST, j'aurais fait deux projets, un API REST coté back et un autre
+avec un framework JS (vue.js ou react) pour le front. Avec l'utilisation du bundle JWT pour la connexion via token
+
 # Test technique humansix
 
 Le but de ce test est de mesurer le niveau technique du candidat et la façon de résoudre une problématique. Cela permet aussi de comprendre l'affinité d'un candidat avec le backend ou le frontend.

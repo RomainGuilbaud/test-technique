@@ -55,7 +55,7 @@ class Order
      * @ORM\OneToMany(targetEntity=Item::class, mappedBy="orderItem")
      * @Groups({"order:read"})
      */
-    private ArrayCollection $items;
+    private Collection $items;
 
     /**
      * Order constructor.
