@@ -41,22 +41,24 @@ class AddOrderController extends AbstractController
 
     public function submitForm(): Response
     {
-        $quantity = $this->requestStack->getCurrentRequest()->get('quantity');
-        $productId = $this->requestStack->getCurrentRequest()->get('product');
+        $quantities = $this->requestStack->getCurrentRequest()->get('quantity');
+        $productIds = $this->requestStack->getCurrentRequest()->get('product');
         $date = new \DateTime();
         $status = "processing";
         $user = $this->security->getUser();
-        /** @var Product $product */
-        $product = $this->productRepositoryGateway->find($productId);
-
-        $itemDto = new ItemDto(null, $product, $quantity, null);
+        $itemDtoList = array();
+        foreach ($productIds as $key => $productId) {
+            $product = $this->productRepositoryGateway->find($productId);
+            $itemDto = new ItemDto(null, $product, $quantities[$key], null);
+            $itemDtoList[] = $itemDto;
+        }
         $orderDto = new OrderDto(
             null,
             $user,
             $date,
             $status,
             null,
-            [$itemDto]
+            $itemDtoList
         );
         $this->saveOrderUseCase->execute($orderDto);
         return $this->redirectToRoute('listOrder');
