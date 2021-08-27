@@ -2,9 +2,12 @@
 
 namespace App\Controller\order;
 
+use App\Dto\item\ItemDto;
 use App\Dto\order\OrderDto;
+use App\Entity\Product;
 use App\Gateway\ProductRepositoryGateway;
 use App\Service\useCase\order\SaveOrder;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,18 +42,23 @@ class AddOrderController extends AbstractController
     public function submitForm(): Response
     {
         $quantity = $this->requestStack->getCurrentRequest()->get('quantity');
-        $product = $this->requestStack->getCurrentRequest()->get('product');
+        $productId = $this->requestStack->getCurrentRequest()->get('product');
         $date = new \DateTime();
         $status = "processing";
         $user = $this->security->getUser();
+        /** @var Product $product */
+        $product = $this->productRepositoryGateway->find($productId);
 
-        /*$orderDto = new OrderDto(
+        $itemDto = new ItemDto(null, $product, $quantity, null);
+        $orderDto = new OrderDto(
             null,
-            $user->getId(),
+            $user,
             $date,
             $status,
-
-        );*/
+            null,
+            [$itemDto]
+        );
+        $this->saveOrderUseCase->execute($orderDto);
         return $this->redirectToRoute('listOrder');
     }
 }

@@ -2,28 +2,27 @@
 namespace App\Dto\order;
 
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class OrderDto
 {
     /**
      * OrderDto constructor.
      * @param int|null $id
-     * @param User|null $customer
+     * @param UserInterface|null $customer
      * @param \DateTimeInterface|null $orderDate
      * @param string|null $status
      * @param float|null $price
-     * @param ArrayCollection $items
+     * @param array $items
      */
     public function __construct(
         private ?int $id,
-        private ?User $customer,
+        private ?UserInterface $customer,
         private ?\DateTimeInterface $orderDate,
         private ?string $status,
         private ?float $price,
-        private ArrayCollection $items
+        private array $items
     ) {
-        $this->items = new ArrayCollection();
     }
 
     /**
@@ -45,7 +44,7 @@ class OrderDto
     }
 
     /**
-     * @return User|null
+     * @return UserInterface|null
      */
     public function getCustomer(): ?User
     {
@@ -53,10 +52,10 @@ class OrderDto
     }
 
     /**
-     * @param User|null $customer
+     * @param UserInterface|null $customer
      * @return OrderDto
      */
-    public function setCustomer(?User $customer): OrderDto
+    public function setCustomer(?UserInterface $customer): OrderDto
     {
         $this->customer = $customer;
         return $this;
@@ -117,18 +116,18 @@ class OrderDto
     }
 
     /**
-     * @return ArrayCollection
+     * @return array
      */
-    public function getItems(): ArrayCollection
+    public function getItems(): array
     {
         return $this->items;
     }
 
     /**
-     * @param ArrayCollection $items
+     * @param array $items
      * @return OrderDto
      */
-    public function setItems(ArrayCollection $items): OrderDto
+    public function setItems(array $items): OrderDto
     {
         $this->items = $items;
         return $this;

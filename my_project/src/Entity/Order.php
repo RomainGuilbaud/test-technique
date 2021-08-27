@@ -52,7 +52,7 @@ class Order
     private ?float $price;
 
     /**
-     * @ORM\OneToMany(targetEntity=Item::class, mappedBy="orderItem")
+     * @ORM\OneToMany(targetEntity=Item::class, mappedBy="orderItem", cascade={"persist"})
      * @Groups({"order:read"})
      */
     private Collection $items;
