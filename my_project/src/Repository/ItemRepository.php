@@ -17,6 +17,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ItemRepository extends ServiceEntityRepository implements ItemRepositoryGateway
 {
+    /**
+     * ItemRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Item::class);
@@ -49,5 +53,4 @@ class ItemRepository extends ServiceEntityRepository implements ItemRepositoryGa
             throw $e;
         }
     }
-
 }

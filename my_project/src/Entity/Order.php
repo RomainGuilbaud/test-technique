@@ -40,7 +40,7 @@ class Order
     private ?\DateTimeInterface $orderDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", columnDefinition="ENUM('canceled', 'processing', 'done')")
      * @Groups({"order:read"})
      */
     private ?string $status;

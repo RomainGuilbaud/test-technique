@@ -1,5 +1,5 @@
 $(document).ready(function(){
     $("#addButton").click(function(){
-        $(".body>*").clone().appendTo(".addProduct");
+        $(".form>*").clone().appendTo(".addProduct");
     });
 });

@@ -141,6 +141,15 @@ button {
     margin-bottom: 20px;
 }
 
-input {
+form {
+    margin: auto;
+    width: 500px;
+}
+
+table tr td {
+    padding-right: 20px;
+}
+
+table {
     margin-bottom: 20px;
 }

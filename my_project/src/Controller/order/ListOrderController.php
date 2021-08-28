@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListOrderController extends AbstractController
 {
-
     /**
      * ListOrderController constructor.
      * @param OrderRepositoryGateway $orderRepositoryGateway
@@ -18,10 +17,12 @@ class ListOrderController extends AbstractController
     public function __construct(
         private OrderRepositoryGateway $orderRepositoryGateway,
         private RequestStack $requestStack
-    )
-    {
+    ) {
     }
 
+    /**
+     * @return Response
+     */
     public function index(): Response
     {
         $querySort = $this->requestStack->getCurrentRequest()->query->get("sort");

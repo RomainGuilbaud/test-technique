@@ -4,10 +4,8 @@ namespace App\Controller\order;
 
 use App\Dto\item\ItemDto;
 use App\Dto\order\OrderDto;
-use App\Entity\Product;
 use App\Gateway\ProductRepositoryGateway;
 use App\Service\useCase\order\SaveOrder;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,22 +13,24 @@ use Symfony\Component\Security\Core\Security;
 
 class AddOrderController extends AbstractController
 {
-
     /**
      * ListOrderController constructor.
      * @param ProductRepositoryGateway $productRepositoryGateway
      * @param SaveOrder $saveOrderUseCase
      * @param RequestStack $requestStack
+     * @param Security $security
      */
     public function __construct(
         private ProductRepositoryGateway $productRepositoryGateway,
         private SaveOrder $saveOrderUseCase,
         private RequestStack $requestStack,
         private Security $security
-    )
-    {
+    ) {
     }
 
+    /**
+     * @return Response
+     */
     public function index(): Response
     {
         $products = $this->productRepositoryGateway->findBy(array(), array('name' => 'asc'));
@@ -39,6 +39,9 @@ class AddOrderController extends AbstractController
         ]);
     }
 
+    /**
+     * @return Response
+     */
     public function submitForm(): Response
     {
         $quantities = $this->requestStack->getCurrentRequest()->get('quantity');
