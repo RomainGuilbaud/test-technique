@@ -3,12 +3,11 @@
 ## Installation
 Je pars du principe que docker et docker-compose soit installé:
 - docker-compose up -d
+
+Attention, je me suis rendu compte que la BDD n'était pas toujours UP lors du script entrypoint.sh, si la BDD n'est pas à jour faire ceci:
 - docker exec -ti my_project_web_1 bash
-- composer install -n
-- pour la suite vérifier bien que la BDD soit bien UP.
 - php bin/console doctrine:migrations:migrate
 - php bin/console app:update-password-user
-il suffit de faire un "docker-compose up -d" pour lancer le projet.
 
 ensuite direction "http://127.0.0.1:8080/login" pour accéder à la page de login
 
