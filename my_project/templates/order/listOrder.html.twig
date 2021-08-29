@@ -44,6 +44,7 @@
                         <div class="total-container">
                             <p>Date : {{ order.orderDate|date("d/m/Y H:i:s") }}</p>
                             <p>Status : {{ order.status }}</p>
+                            <p>Client : {{ order.customer.firstName }} {{ order.customer.lastName }}</p>
                             <p class="total-ttc">Prix Total TTC: {{ order.price }}€</p>
                         </div>
                     </div>

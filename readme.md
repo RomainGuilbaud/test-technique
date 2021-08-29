@@ -8,7 +8,7 @@ Je pars du principe que docker et docker-compose soit installé:
 Attention, je me suis rendu compte que la BDD n'était pas toujours UP lors du script entrypoint.sh, si la BDD n'est pas à jour (lancer le projet pour vérifier si tout est OK) faire ceci:
 - docker exec -ti my_project_web_1 bash
 - php bin/console doctrine:migrations:migrate
-- php bin/console app:update-password-user
+- php bin/console app:update-password-user (attention à ne pas l'exécuter plusieurs fois car elle peut crypter un mot de passe déjà crypter)
 
 ensuite direction "http://127.0.0.1:8080/login" pour accéder à la page de login
 
