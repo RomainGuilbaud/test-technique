@@ -1,46 +1,46 @@
 # Rapport du rendu
 
 ## Installation
-Je pars du principe que docker et docker-compose soit installé:
-- Aller dans le repertoire my_project
+Je pars du principe que docker et docker-compose soit installé :
+- Aller dans le répertoire my_project
 - docker-compose up -d
 
-Attention, je me suis rendu compte que la BDD n'était pas toujours UP lors du script entrypoint.sh, si la BDD n'est pas à jour (lancer le projet pour vérifier si tout est OK) faire ceci:
+Attention, je me suis rendu compte que la BDD n'était pas toujours UP lors du script entrypoint.sh, si la BDD n'est pas à jour (lancer le projet pour vérifier si tout est OK) faire ceci :
 - docker exec -ti my_project_web_1 bash
 - php bin/console doctrine:migrations:migrate
-- php bin/console app:update-password-user (attention à ne pas l'exécuter plusieurs fois car elle peut crypter un mot de passe déjà crypter)
+- php bin/console app:update-password-user (attention à ne pas l'exécuter plusieurs fois car elle peut crypter un mot de passe déjà crypté)
 
-ensuite direction "http://127.0.0.1:8080/login" pour accéder à la page de login
+Ensuite direction "http://127.0.0.1:8080/login" pour accéder à la page de login
 
 
 ## Explication de l'architecture
 ### back
-Je suis parti sur le principe du clean architecture qui permet une meilleur evolution du projet,
-des tests plus simple à implémenter, etc...
+Je suis parti sur le principe du « clean architecture » qui permet une meilleure évolution du projet,
+des tests plus simple à implémenter et une meilleur adaptabilité pour des changements externe à l’application.
 
 Pour cela nous avons les gateways, les useCases et les dto qui permettent de bien séparer le noyau du projet avec
-l'externe (controller, bdd, view, api externe, etc...).
+l’externe (controller, bdd, view, api externe, etc...).
 
-Bien sûr, je suis ouvert à d'autres design pattern, je sais m'adapter facilement à une autre architecture.
+Bien sûr, je suis ouvert à d'autres design pattern, je sais m'adapter facilement à une autre architecture ou design pattern.
 
-Pour tout ca, je suis parti sur du symfony 5.3 avec php 8. J'ai utilisé api-platform qui me permet de facilement faire
-des requêtes API REST, il y a d'ailleurs tellement les requêtes POST, PUT, DELETE et autres sur les entités.
+En termes de framework, je suis parti sur du Symfony 5.3 avec php 8. J'ai utilisé api-platform qui me permet de facilement faire
+des requêtes API REST, il y a d'ailleurs les requêtes POST, PUT, DELETE et autres sur les entités.
 
 ### front
-Par le peu de temps que j'avais, je me suis tourné sur les outils directement intégré à Symfony. J'ai donc 
-utilisé twig et jquery. Je me suis pas beaucoup focus sur le front. D'ailleurs, j'ai plus l'habitude de travaillé sur des frameworks js
+Avec peu de temps que j'avais cette semaine, je me suis tourné sur les outils directement intégré à Symfony. J'ai donc 
+utilisé twig et jquery. Je ne me suis pas beaucoup focus sur le front. D'ailleurs, j'ai plus l'habitude de travaillé sur des frameworks js
 (react.js ou vue.js), twig et jquery étant des technos que je n'ai pas utilisé depuis quelques années.
 
 ### migration du fichier xml
-le script est dans le deuxiéme fichier de migration (Version20210826101150.php).
-J'utilise aussi une commande pour encoder les mots de passe (un peu compliqué de les faire directement dans le fichier de migrations)
+Le script est dans le deuxième fichier de migration (Version20210826101150.php).
+J'utilise aussi une commande pour encoder les mots de passe après migration.
 
 ## Ce que j'aurais pu faire avec plus de temps
-Étant donné que dans l'exercice, nous finissons avec des requêtes API REST, j'aurais fait deux projets, un API REST coté back et un autre
+Étant donné que dans l'exercice, nous finissons avec des requêtes API REST, j'aurais fait deux projets, un projet back en API REST et un autre
 avec un framework JS (vue.js ou react) pour le front. Avec l'utilisation du bundle JWT pour la connexion via token.
 
 ## Le reste à faire (optionnel)
-- faire un script pour attendre le démarrage de mysql pour le entrypoint
+- faire un script pour attendre le démarrage de mysql pour le entrypoint.sh
 - Faire les tests unitaires
 - rendre obligatoire l'authentification sur l'ensemble du projet (excepté la page login)
 - la requête GET product/{sku}
