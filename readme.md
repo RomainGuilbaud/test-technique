@@ -2,6 +2,7 @@
 
 ## Installation
 Je pars du principe que docker et docker-compose soit installé:
+- Aller dans le repertoire my_project
 - docker-compose up -d
 
 Attention, je me suis rendu compte que la BDD n'était pas toujours UP lors du script entrypoint.sh, si la BDD n'est pas à jour (lancer le projet pour vérifier si tout est OK) faire ceci:
