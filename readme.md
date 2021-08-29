@@ -4,7 +4,7 @@
 Je pars du principe que docker et docker-compose soit installé:
 - docker-compose up -d
 
-Attention, je me suis rendu compte que la BDD n'était pas toujours UP lors du script entrypoint.sh, si la BDD n'est pas à jour faire ceci:
+Attention, je me suis rendu compte que la BDD n'était pas toujours UP lors du script entrypoint.sh, si la BDD n'est pas à jour (lancer le projet pour vérifier si tout est OK) faire ceci:
 - docker exec -ti my_project_web_1 bash
 - php bin/console doctrine:migrations:migrate
 - php bin/console app:update-password-user
@@ -22,8 +22,8 @@ l'externe (controller, bdd, view, api externe, etc...).
 
 Bien sûr, je suis ouvert à d'autres design pattern, je sais m'adapter facilement à une autre architecture.
 
-Pour tout cela, je suis parti sur du symfony 5.3 avec php 8. J'ai utilisé api-platform qui me permet de facilement faire
-des requêtes API REST, d'ailleurs tellement rapide, qu'il y a aussi le POST,PUT DELETE, etc...
+Pour tout ca, je suis parti sur du symfony 5.3 avec php 8. J'ai utilisé api-platform qui me permet de facilement faire
+des requêtes API REST, il y a d'ailleurs tellement les requêtes POST, PUT, DELETE et autres sur les entités.
 
 ### front
 Par le peu de temps que j'avais, je me suis tourné sur les outils directement intégré à Symfony. J'ai donc 
@@ -35,10 +35,11 @@ le script est dans le deuxiéme fichier de migration (Version20210826101150.php)
 J'utilise aussi une commande pour encoder les mots de passe (un peu compliqué de les faire directement dans le fichier de migrations)
 
 ## Ce que j'aurais pu faire avec plus de temps
-Étant donné que dans l'exercice, nous finissons avec des requetes API REST, j'aurais fait deux projets, un API REST coté back et un autre
-avec un framework JS (vue.js ou react) pour le front. Avec l'utilisation du bundle JWT pour la connexion via token
+Étant donné que dans l'exercice, nous finissons avec des requêtes API REST, j'aurais fait deux projets, un API REST coté back et un autre
+avec un framework JS (vue.js ou react) pour le front. Avec l'utilisation du bundle JWT pour la connexion via token.
 
-##le reste à faire (optionnel)
+## Le reste à faire (optionnel)
+- faire un script pour attendre le démarrage de mysql pour le entrypoint
 - Faire les tests unitaires
 - rendre obligatoire l'authentification sur l'ensemble du projet (excepté la page login)
 - la requête GET product/{sku}
